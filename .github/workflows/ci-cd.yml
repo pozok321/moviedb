@@ -1,0 +1,40 @@
+name: Frontend CI-CD
+
+# Kapan workflow ini dijalankan?
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Mengambil kode dari repositori
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # 2. Setup environment Node.js
+    - name: Use Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    # 3. Install dependencies
+    - name: Install dependencies
+      run: npm install
+
+    # 4. Menjalankan Lint (opsional, untuk cek kerapihan kode)
+    - name: Run Lint
+      run: npm run lint
+
+    # 5. Menjalankan Unit Testing
+    - name: Run Tests
+      run: npm test
+
+    # 6. Melakukan Build (untuk memastikan tidak ada error saat kompilasi)
+    - name: Build Project
+      run: npm run build
